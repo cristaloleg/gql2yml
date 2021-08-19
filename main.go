@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -23,7 +24,11 @@ func main() {
 		panic(errLoad)
 	}
 
-	if err := saveToYaml(resultFile, schema); err != nil {
+	marshal := saveToYAML
+	if asJSON {
+		marshal = saveToJSON
+	}
+	if err := marshal(resultFile, schema); err != nil {
 		panic(err)
 	}
 }
@@ -68,10 +73,12 @@ func loadSchema(sources []*ast.Source) (*ast.Schema, error) {
 
 var schemasFlag stringSliceFlag
 var resultFile string
+var asJSON bool
 
 func init() {
 	flag.Var(&schemasFlag, "schema", "file with a GraphQL schema")
 	flag.StringVar(&resultFile, "result", "schema.yaml", "filename with a schema in YAML")
+	flag.BoolVar(&asJSON, "json", false, "should save schema in JSON")
 	flag.Parse()
 
 	if len(schemasFlag) == 0 {
@@ -79,7 +86,7 @@ func init() {
 	}
 }
 
-func saveToYaml(filaname string, v interface{}) error {
+func saveToYAML(filaname string, v interface{}) error {
 	result, err := os.Create(filaname)
 	if err != nil {
 		return fmt.Errorf("cannot open result file: %w", err)
@@ -88,6 +95,19 @@ func saveToYaml(filaname string, v interface{}) error {
 
 	if err := yaml.NewEncoder(result).Encode(v); err != nil {
 		return fmt.Errorf("cannot marshal to YAML: %w", err)
+	}
+	return nil
+}
+
+func saveToJSON(filaname string, v interface{}) error {
+	result, err := os.Create(filaname)
+	if err != nil {
+		return fmt.Errorf("cannot open result file: %w", err)
+	}
+	defer result.Close()
+
+	if err := json.NewEncoder(result).Encode(v); err != nil {
+		return fmt.Errorf("cannot marshal to JSON: %w", err)
 	}
 	return nil
 }

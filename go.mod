@@ -8,4 +8,4 @@ require (
 )
 
 // Fork with a one-liner change - do not marshal schema file per GraphQL definition
-replace github.com/vektah/gqlparser/v2 v2.2.0 => github.com/cristaloleg/gqlparser/v2 v2.2.1-0.20210819150252-ca7902f8019d
+replace github.com/vektah/gqlparser/v2 v2.2.0 => github.com/cristaloleg/gqlparser/v2 v2.2.1-0.20210819155019-33200f332744
