@@ -84,6 +84,9 @@ func init() {
 	if len(schemasFlag) == 0 {
 		panic("no schema files provided")
 	}
+	if asJSON && resultFile == "schema.yaml" {
+		resultFile = "schema.json"
+	}
 }
 
 func saveToYAML(filaname string, v interface{}) error {

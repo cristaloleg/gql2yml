@@ -1,6 +1,6 @@
 # gql2yml
 
-GraphQL to YAML - convert your GraphQL schema to YAML.
+GraphQL to YAML/JSON - convert your GraphQL schema to YAML/JSON.
 
 ```sh
 # install gql2yaml
@@ -11,6 +11,12 @@ $ gql2yml -schema=server.graphql -result=schema.yaml
 
 # see the result
 $ cat schema.yaml
+
+# and also json
+$ gql2yml -schema=server.graphql -result=schema.json -json
+
+# or many files
+$ gql2yml -schema=schema.graphql -schema=legacy.graphql
 ```
 
 ## License
